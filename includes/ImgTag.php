@@ -8,24 +8,14 @@ if (!defined('MEDIAWIKI')) {
     die('This file is a MediaWiki extension, it is not a valid entry point');
 }
 
-$wgExtensionCredits['parserhook'][] = array(
-    'path' => __FILE__,
-    'name' => 'ImgTag',
-    'author' => 'Your Name',
-    'version' => '1.0.0',
-    'description' => 'Allows <img> tags in wikitext with URL sanitization',
-    'descriptionmsg' => 'allowimgtag-desc',
-);
-
 // Configuration - allowed domains/protocols
 $wgImgTagDomains = [
     'upload.wikimedia.org',
     'commons.wikimedia.org',
-    // Add your trusted domains here
+    'static.wikitide.net',
 ];
 
 $wgImgTagProtocols = ['https', 'http'];
-$wgImgTagMaxSize = 1000; // Max width/height in pixels
 
 class ImgTagHooks {
     
@@ -35,32 +25,13 @@ class ImgTagHooks {
     public static function onParserFirstCallInit(Parser $parser) {
         // Register <img> as a valid tag
         $parser->setHook('img', [self::class, 'renderImgTag']);
-        return true;
-    }
-    
-    /**
-     * Hook into HTML sanitization to allow img tags
-     */
-    public static function onHtmlCacheUpdaterAppendQuery(&$query) {
-        return true;
-    }
-    
-    /**
-     * Modify the sanitizer whitelist to allow img tags
-     */
-    public static function onSanitizerAfterFixTagAttributes(&$text, $element, &$attribs, $parser) {
-        if ($element === 'img') {
-            // Allow img element through sanitizer
-            return true;
-        }
-        return true;
     }
     
     /**
      * Main rendering function for <img> tags
      */
     public static function renderImgTag($input, array $args, Parser $parser, PPFrame $frame) {
-        global $wgImgTagDomains, $wgAllowImgTagProtocols, $wgAllowImgTagMaxSize;
+        global $wgImgTagDomains, $wgImgTagProtocols;
         
         // Get and sanitize the src attribute
         $src = isset($args['src']) ? trim($args['src']) : '';
@@ -70,7 +41,7 @@ class ImgTagHooks {
         }
         
         // Sanitize the URL
-        $sanitizedSrc = self::sanitizeImageUrl($src, $wgImgTagDomains, $wgAllowImgTagProtocols);
+        $sanitizedSrc = self::sanitizeImageUrl($src, $wgImgTagDomains, $wgImgTagProtocols);
         
         if (!$sanitizedSrc) {
             return '<span class="error">Error: Invalid or unauthorized image URL</span>';
@@ -83,12 +54,6 @@ class ImgTagHooks {
         foreach ($allowedAttribs as $attrib) {
             if (isset($args[$attrib])) {
                 $value = htmlspecialchars(trim($args[$attrib]), ENT_QUOTES);
-                
-                // Special handling for width/height
-                if (($attrib === 'width' || $attrib === 'height') && is_numeric($value)) {
-                    $value = min((int)$value, $wgImgTagMaxSize);
-                }
-                
                 $safeAttribs[$attrib] = $value;
             }
         }
@@ -182,29 +147,7 @@ class ImgTagHooks {
         
         return $cleanUrl;
     }
-    
-    /**
-     * Hook to modify HTML sanitizer rules
-     */
-    public static function onParserAfterTidy(Parser $parser, &$text) {
-        // Additional post-processing if needed
-        return true;
-    }
 }
 
 // Register hooks
 $wgHooks['ParserFirstCallInit'][] = 'ImgTagHooks::onParserFirstCallInit';
-$wgHooks['SanitizerAfterFixTagAttributes'][] = 'ImgTagHooks::onSanitizerAfterFixTagAttributes';
-$wgHooks['ParserAfterTidy'][] = 'ImgTagHooks::onParserAfterTidy';
-
-// Add to HTML sanitizer whitelist
-$wgHooks['ParserBeforeInternalParse'][] = function($parser, $text, $stripState) {
-    global $wgHtmlEntities;
-    
-    // Temporarily allow img tags in the sanitizer
-    if (!isset($wgHtmlEntities['img'])) {
-        $wgHtmlEntities['img'] = true;
-    }
-    
-    return true;
-};
