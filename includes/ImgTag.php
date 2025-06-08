@@ -1,13 +1,24 @@
 <?php
 
+# namespace MediaWiki\Extension\ImgTag;
+
+# use MediaWiki\Hook\ParserFirstCallInitHook;
+# use MediaWiki\Parser\PPFrame;
+use MediaWiki\MediaWikiServices;
+
 class ImgTagHooks {
+
+    private static $config;
     
-    public static function onParserFirstCallInit(Parser $parser) {
+    public static function onParserFirstCallInit($parser) {
         $parser->setHook('img', [self::class, 'renderImgTag']);
     }
     
     public static function renderImgTag($input, array $args, Parser $parser, PPFrame $frame) {
-        global $wgImgTagDomains, $wgImgTagProtocols;    
+        if ( self::$config === null ) {
+            self::$config = MediaWikiServices::getInstance()->getMainConfig();
+        }
+
         // Get and sanitize the src attribute
         $src = isset($args['src']) ? trim($args['src']) : '';
         
@@ -16,7 +27,9 @@ class ImgTagHooks {
         }
         
         // Sanitize the URL
-        $sanitizedSrc = self::sanitizeImageUrl($src, $wgImgTagDomains, $wgImgTagProtocols);
+        $domains = self::$config->get("ImgTagDomains");
+        $protocols = self::$config->get("ImgTagProtocols");
+        $sanitizedSrc = self::sanitizeImageUrl($src, $domains, $protocols);
         
         if (!$sanitizedSrc) {
             return '<span class="error">Error: Invalid or unauthorized image URL</span>';
