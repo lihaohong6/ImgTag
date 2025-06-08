@@ -2,8 +2,7 @@
 
 # namespace MediaWiki\Extension\ImgTag;
 
-# use MediaWiki\Hook\ParserFirstCallInitHook;
-# use MediaWiki\Parser\PPFrame;
+use MediaWiki\Parser\PPFrame;
 use MediaWiki\MediaWikiServices;
 
 class ImgTagHooks {

@@ -13,9 +13,7 @@
         "ImgTagHooks": "includes/ImgTag.php"
     },
     "Hooks": {
-        "ParserFirstCallInit": "ImgTagHooks::onParserFirstCallInit",
-        "SanitizerAfterFixTagAttributes": "ImgTagHooks::onSanitizerAfterFixTagAttributes", 
-        "ParserAfterTidy": "ImgTagHooks::onParserAfterTidy"
+        "ParserFirstCallInit": "ImgTagHooks::onParserFirstCallInit"
     },
     "config": {
         "ImgTagDomains": {
