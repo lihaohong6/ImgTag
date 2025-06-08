@@ -1,14 +1,5 @@
 <?php
-/**
- * MediaWiki Extension: ImgTag
- * Allows <img> tags in wikitext with sanitized src attributes
- */
 
-if (!defined('MEDIAWIKI')) {
-    die('This file is a MediaWiki extension, it is not a valid entry point');
-}
-
-// Configuration - allowed domains/protocols
 $wgImgTagDomains = [
     'upload.wikimedia.org',
     'commons.wikimedia.org',
@@ -19,17 +10,10 @@ $wgImgTagProtocols = ['https', 'http'];
 
 class ImgTagHooks {
     
-    /**
-     * Hook into parser setup to register the img tag
-     */
     public static function onParserFirstCallInit(Parser $parser) {
-        // Register <img> as a valid tag
         $parser->setHook('img', [self::class, 'renderImgTag']);
     }
     
-    /**
-     * Main rendering function for <img> tags
-     */
     public static function renderImgTag($input, array $args, Parser $parser, PPFrame $frame) {
         global $wgImgTagDomains, $wgImgTagProtocols;
         
@@ -48,7 +32,7 @@ class ImgTagHooks {
         }
         
         // Sanitize other attributes
-        $allowedAttribs = ['alt', 'title', 'width', 'height', 'class'];
+        $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         $safeAttribs = [];
         
         foreach ($allowedAttribs as $attrib) {
@@ -110,14 +94,6 @@ class ImgTagHooks {
         // Additional security checks
         $path = isset($parsed['path']) ? $parsed['path'] : '';
         
-        // Block potentially dangerous file extensions
-        $dangerousExtensions = ['.php', '.asp', '.jsp', '.exe', '.bat', '.sh'];
-        foreach ($dangerousExtensions as $ext) {
-            if (str_ends_with(strtolower($path), $ext)) {
-                return false;
-            }
-        }
-        
         // Allow only image file extensions
         $imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
         $hasImageExtension = false;
@@ -148,6 +124,3 @@ class ImgTagHooks {
         return $cleanUrl;
     }
 }
-
-// Register hooks
-$wgHooks['ParserFirstCallInit'][] = 'ImgTagHooks::onParserFirstCallInit';
