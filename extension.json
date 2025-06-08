@@ -1,0 +1,35 @@
+{
+    "name": "ImgTag",
+    "version": "0.1.0",
+    "author": "Peter Li",
+    "url": "",
+    "descriptionmsg": "imgtag-desc",
+    "license-name": "GPL-2.0-or-later",
+    "type": "parserhook",
+    "requires": {
+        "MediaWiki": ">= 1.42.0"
+    },
+    "AutoloadClasses": {
+        "ImgTagHooks": "includes/ImgTag.php"
+    },
+    "Hooks": {
+        "ParserFirstCallInit": "ImgTagHooks::onParserFirstCallInit",
+        "SanitizerAfterFixTagAttributes": "ImgTagHooks::onSanitizerAfterFixTagAttributes", 
+        "ParserAfterTidy": "ImgTagHooks::onParserAfterTidy"
+    },
+    "config": {
+        "ImgTagDomains": {
+            "value": [
+                "upload.wikimedia.org",
+                "commons.wikimedia.org"
+            ]
+        },
+        "ImgTagProtocols": {
+            "value": ["https", "http"]
+        }
+    },
+    "MessagesDirs": {
+        "ImgTag": "i18n"
+    },
+    "manifest_version": 2
+}
