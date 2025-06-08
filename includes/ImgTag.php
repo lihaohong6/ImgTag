@@ -1,13 +1,5 @@
 <?php
 
-$wgImgTagDomains = [
-    'upload.wikimedia.org',
-    'commons.wikimedia.org',
-    'static.wikitide.net',
-];
-
-$wgImgTagProtocols = ['https', 'http'];
-
 class ImgTagHooks {
     
     public static function onParserFirstCallInit(Parser $parser) {
@@ -15,8 +7,7 @@ class ImgTagHooks {
     }
     
     public static function renderImgTag($input, array $args, Parser $parser, PPFrame $frame) {
-        global $wgImgTagDomains, $wgImgTagProtocols;
-        
+        global $wgImgTagDomains, $wgImgTagProtocols;    
         // Get and sanitize the src attribute
         $src = isset($args['src']) ? trim($args['src']) : '';
         

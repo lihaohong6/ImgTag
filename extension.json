@@ -21,12 +21,18 @@
         "ImgTagDomains": {
             "value": [
                 "upload.wikimedia.org",
-                "commons.wikimedia.org"
-            ]
+                "commons.wikimedia.org",
+                "static.wikitide.net"
+            ],
+            "description": "Domains that can be used in the src attribute of images"
         },
         "ImgTagProtocols": {
-            "value": ["https", "http"]
+            "value": ["https", "http"],
+            "description": "Protocols that the src attribute can use"
         }
+    },
+    "ConfigRegistry": {
+        "imgtag": "GlobalVarConfig::newInstance"
     },
     "MessagesDirs": {
         "ImgTag": "i18n"
