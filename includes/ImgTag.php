@@ -28,10 +28,9 @@ class ImgTagHooks {
         // Sanitize the URL
         $domains = self::$config->get("ImgTagDomains");
         $protocols = self::$config->get("ImgTagProtocols");
-        $sanitizedSrc = self::sanitizeImageUrl($src, $domains, $protocols);
-        
-        if (!$sanitizedSrc) {
-            return '<span class="error">Error: Invalid or unauthorized image URL</span>';
+        [$sanitizedSrc, $sanitizationError] = self::sanitizeImageUrl($src, $domains, $protocols);
+        if ($sanitizationError) {
+            return '<span class="error">' . $sanitizationError . '</span>';
         }
         
         // Sanitize other attributes
@@ -66,17 +65,17 @@ class ImgTagHooks {
         $parsed = parse_url($url);
         
         if (!$parsed) {
-            return false;
+            return [false, "Image src must be non-empty"];
         }
         
         // Check protocol
         if (!isset($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), $allowedProtocols)) {
-            return false;
+            return [false, "Image src must have a valid protocol"];
         }
         
         // Check domain whitelist
         if (!isset($parsed['host'])) {
-            return false;
+            return [false, "Image src must have a valid host"];
         }
         
         $host = strtolower($parsed['host']);
@@ -91,7 +90,7 @@ class ImgTagHooks {
         }
         
         if (!$domainAllowed) {
-            return false;
+            return [false, "Image src must have a valid domain"];
         }
         
         // Additional security checks
@@ -108,7 +107,7 @@ class ImgTagHooks {
         }
         
         if (!$hasImageExtension) {
-            return false;
+            return [false, "Image src must point to a valid file extension"];
         }
         
         // Reconstruct clean URL
@@ -124,6 +123,6 @@ class ImgTagHooks {
             $cleanUrl .= '?' . $parsed['query'];
         }
         
-        return $cleanUrl;
+        return [$cleanUrl, false];
     }
 }
