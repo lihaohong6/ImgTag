@@ -40,9 +40,10 @@ class ImgTag {
             $sanitizedSrc = $src;
         }
 
-        // Sanitize other attributes
         $safeAttribs = [];
         $safeAttribs['src'] = $sanitizedSrc;
+
+        // Sanitize other attributes
         $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         foreach ($args as $attrib => $value) {
             if (in_array($attrib, $allowedAttribs)) {
@@ -65,19 +66,18 @@ class ImgTag {
             return [false, "Image src must be non-empty"];
         }
 
-        // Check protocol
+        // Check protocol (e.g. https)
         if (!isset($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), $allowedProtocols)) {
             return [false, "Image src must have a valid protocol"];
         }
 
-        // Check domain whitelist
         if (!isset($parsed['host'])) {
             return [false, "Image src must have a valid host"];
         }
 
         $host = strtolower($parsed['host']);
         $domainAllowed = false;
-
+        // Check host domain
         foreach ($allowedDomains as $allowedDomain) {
             if ($host === strtolower($allowedDomain) || 
                     str_ends_with($host, '.' . strtolower($allowedDomain))) {
