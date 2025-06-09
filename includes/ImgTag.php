@@ -90,22 +90,6 @@ class ImgTag {
             return [false, "Image src must have a valid domain"];
         }
 
-        // Additional security checks
-        $path = isset($parsed['path']) ? $parsed['path'] : '';
-
-        // Reconstruct clean URL
-        $cleanUrl = $parsed['scheme'] . '://' . $parsed['host'];
-
-        if (isset($parsed['port'])) {
-            $cleanUrl .= ':' . $parsed['port'];
-        }
-
-        $cleanUrl .= $path;
-
-        if (isset($parsed['query'])) {
-            $cleanUrl .= '?' . $parsed['query'];
-        }
-
-        return [$cleanUrl, false];
+        return [$url, false];
     }
 }
