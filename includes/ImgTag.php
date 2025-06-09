@@ -9,11 +9,11 @@ use MediaWiki\MediaWikiServices;
 class ImgTag {
 
     private static $config;
-    
+
     public static function onParserFirstCallInit($parser) {
         $parser->setHook('img', [self::class, 'renderImgTag']);
     }
-    
+
     public static function renderImgTag($input, array $args, Parser $parser, PPFrame $frame) {
         if ( self::$config === null ) {
             self::$config = MediaWikiServices::getInstance()->getMainConfig();
@@ -21,19 +21,23 @@ class ImgTag {
 
         // Get and sanitize the src attribute
         $src = isset($args['src']) ? trim($args['src']) : '';
-        
+
         if (empty($src)) {
             return '<span class="error">Error: img tag requires src attribute</span>';
         }
-        
-        // Sanitize the URL
-        $domains = self::$config->get("ImgTagDomains");
-        $protocols = self::$config->get("ImgTagProtocols");
-        [$sanitizedSrc, $sanitizationError] = self::sanitizeImageUrl($src, $domains, $protocols);
-        if ($sanitizationError) {
-            return '<span class="error">' . $sanitizationError . '</span>';
+        $sanitizeSrc = self::$config->get("ImgTagSanitizeSrc");
+        if ($sanitizeSrc) { 
+            // Sanitize the URL
+            $domains = self::$config->get("ImgTagDomains");
+            $protocols = self::$config->get("ImgTagProtocols");
+            [$sanitizedSrc, $sanitizationError] = self::sanitizeImageUrl($src, $domains, $protocols);
+            if ($sanitizationError) {
+                return '<span class="error">' . $sanitizationError . '</span>';
+            }
+        } else {
+            $sanitizedSrc = $src;
         }
-        
+
         // Sanitize other attributes
         $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         $safeAttribs = [];

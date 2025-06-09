@@ -1,4 +1,5 @@
 !! Version 2
+
 !! test
 Simple images that are not sanitized
 !! wikitext
@@ -7,5 +8,36 @@ Simple images that are not sanitized
 !! html
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Mediawiki_logo_reworked.png" width="200px" />
 <img src="https://upload.wikimedia.org/test.jpg" width="100px" height="10px" alt="Desc" class="test" loading="lazy" />
+</p>
+!! end
+
+!! test
+Disable sanitizing
+!! config
+wgImgTagSanitizeSrc=false
+!! wikitext
+<img src="something" />
+!! html
+<p><img src="something" />
+</p>
+!! end
+
+!! test
+Sanitize image src
+!! wikitext
+<img src="https://a.org/wikipedia/commons/a.jpeg" width="200px"/>
+<img src="file://upload.wikimedia.org/a.png" width="200px"/>
+!! html
+<p><span class="error">Image src must have a valid domain</span>
+<span class="error">Image src must have a valid protocol</span>
+</p>
+!! end
+
+!! test
+Sanitize image attributes
+!! wikitext
+<img src="https://upload.wikimedia.org/a.png" onerror="alert(1)"/>
+!! html
+<p><img src="https://upload.wikimedia.org/a.png" />
 </p>
 !! end

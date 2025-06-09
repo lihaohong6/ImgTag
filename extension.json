@@ -16,6 +16,10 @@
         "ParserFirstCallInit": "MediaWiki\\Extension\\ImgTag\\ImgTag::onParserFirstCallInit"
     },
     "config": {
+        "ImgTagSanitizeSrc": {
+            "value": true,
+            "description": "Whether the src attribute of the img tag should be sanitized"
+        },
         "ImgTagDomains": {
             "value": [
                 "upload.wikimedia.org",
