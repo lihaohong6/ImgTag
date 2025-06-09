@@ -37,79 +37,77 @@ class ImgTag {
         // Sanitize other attributes
         $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         $safeAttribs = [];
-        
-        foreach ($allowedAttribs as $attrib) {
-            if (isset($args[$attrib])) {
-                $value = htmlspecialchars(trim($args[$attrib]), ENT_QUOTES);
-                $safeAttribs[$attrib] = $value;
+        foreach ($args as $attrib => $value) {
+            if (in_array($attrib, $allowedAttribs)) {
+                $safeAttribs[$attrib] = htmlspecialchars(trim($value), ENT_QUOTES);
             }
-        }
-        
+        } 
+
         // Build the img tag
         $imgTag = '<img src="' . htmlspecialchars($sanitizedSrc, ENT_QUOTES) . '"';
-        
+
         foreach ($safeAttribs as $attr => $value) {
             $imgTag .= ' ' . $attr . '="' . $value . '"';
         }
-        
+
         $imgTag .= ' />';
-        
+
         // Mark as raw HTML so MediaWiki doesn't escape it
         return $parser->insertStripItem($imgTag);
     }
-    
+
     /**
      * Sanitize image URLs
      */
     private static function sanitizeImageUrl($url, $allowedDomains, $allowedProtocols) {
         // Parse the URL
         $parsed = parse_url($url);
-        
+
         if (!$parsed) {
             return [false, "Image src must be non-empty"];
         }
-        
+
         // Check protocol
         if (!isset($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), $allowedProtocols)) {
             return [false, "Image src must have a valid protocol"];
         }
-        
+
         // Check domain whitelist
         if (!isset($parsed['host'])) {
             return [false, "Image src must have a valid host"];
         }
-        
+
         $host = strtolower($parsed['host']);
         $domainAllowed = false;
-        
+
         foreach ($allowedDomains as $allowedDomain) {
             if ($host === strtolower($allowedDomain) || 
-                str_ends_with($host, '.' . strtolower($allowedDomain))) {
+                    str_ends_with($host, '.' . strtolower($allowedDomain))) {
                 $domainAllowed = true;
                 break;
             }
         }
-        
+
         if (!$domainAllowed) {
             return [false, "Image src must have a valid domain"];
         }
-        
+
         // Additional security checks
         $path = isset($parsed['path']) ? $parsed['path'] : '';
-        
+
         // Reconstruct clean URL
         $cleanUrl = $parsed['scheme'] . '://' . $parsed['host'];
-        
+
         if (isset($parsed['port'])) {
             $cleanUrl .= ':' . $parsed['port'];
         }
-        
+
         $cleanUrl .= $path;
-        
+
         if (isset($parsed['query'])) {
             $cleanUrl .= '?' . $parsed['query'];
         }
-        
+
         return [$cleanUrl, false];
     }
 }

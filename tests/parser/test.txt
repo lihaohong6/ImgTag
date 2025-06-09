@@ -1,0 +1,11 @@
+!! Version 2
+!! test
+Simple images that are not sanitized
+!! wikitext
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Mediawiki_logo_reworked.png" width="200px" />
+<img src="https://upload.wikimedia.org/test.jpg" width="100px" height="10px" alt="Desc" class="test" loading="lazy" />
+!! html
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Mediawiki_logo_reworked.png" width="200px" />
+<img src="https://upload.wikimedia.org/test.jpg" width="100px" height="10px" alt="Desc" class="test" loading="lazy" />
+</p>
+!! end
