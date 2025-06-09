@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ImgTag;
 
+use MediaWiki\Html\Html;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 use MediaWiki\MediaWikiServices;
@@ -39,25 +40,16 @@ class ImgTag {
         }
 
         // Sanitize other attributes
-        $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         $safeAttribs = [];
+        $safeAttribs['src'] = $sanitizedSrc;
+        $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         foreach ($args as $attrib => $value) {
             if (in_array($attrib, $allowedAttribs)) {
                 $safeAttribs[$attrib] = htmlspecialchars(trim($value), ENT_QUOTES);
             }
         } 
 
-        // Build the img tag
-        $imgTag = '<img src="' . htmlspecialchars($sanitizedSrc, ENT_QUOTES) . '"';
-
-        foreach ($safeAttribs as $attr => $value) {
-            $imgTag .= ' ' . $attr . '="' . $value . '"';
-        }
-
-        $imgTag .= ' />';
-
-        // Mark as raw HTML so MediaWiki doesn't escape it
-        return $parser->insertStripItem($imgTag);
+        return Html::rawElement('img', $safeAttribs); 
     }
 
     /**
