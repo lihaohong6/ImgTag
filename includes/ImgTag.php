@@ -97,20 +97,6 @@ class ImgTag {
         // Additional security checks
         $path = isset($parsed['path']) ? $parsed['path'] : '';
         
-        // Allow only image file extensions
-        $imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
-        $hasImageExtension = false;
-        foreach ($imageExtensions as $ext) {
-            if (str_ends_with(strtolower($path), $ext)) {
-                $hasImageExtension = true;
-                break;
-            }
-        }
-        
-        if (!$hasImageExtension) {
-            return [false, "Image src must point to a valid file extension"];
-        }
-        
         // Reconstruct clean URL
         $cleanUrl = $parsed['scheme'] . '://' . $parsed['host'];
         
