@@ -22,6 +22,7 @@ class ImgTag {
 
         // Get and sanitize the src attribute
         $src = isset($args['src']) ? trim($args['src']) : '';
+        $src = $parser->recursivePreprocess($src, $frame);
 
         if (empty($src)) {
             return '<span class="error">Error: img tag requires src attribute</span>';
@@ -45,6 +46,7 @@ class ImgTag {
         $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         foreach ($args as $attrib => $value) {
             if (in_array($attrib, $allowedAttribs)) {
+                $value = $parser->recursivePreprocess($value, $frame);
                 $safeAttribs[$attrib] = htmlspecialchars(trim($value), ENT_QUOTES);
             }
         } 

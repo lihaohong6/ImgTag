@@ -41,3 +41,12 @@ Sanitize image attributes
 <p><img src="https://upload.wikimedia.org/a.png" />
 </p>
 !! end
+
+!! test
+Recursively parse templates inside img tags
+!! wikitext
+<img src="https://{{{1|upload}}}.wikimedia.{{{2|org}}}/a.png" width="{{{width|200}}}px" />
+!! html
+<p><img src="https://upload.wikimedia.org/a.png" width="200px" />
+</p>
+!! end
