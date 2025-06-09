@@ -1,11 +1,12 @@
 <?php
 
-# namespace MediaWiki\Extension\ImgTag;
+namespace MediaWiki\Extension\ImgTag;
 
+use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 use MediaWiki\MediaWikiServices;
 
-class ImgTagHooks {
+class ImgTag {
 
     private static $config;
     

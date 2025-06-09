@@ -9,11 +9,11 @@
     "requires": {
         "MediaWiki": ">= 1.42.0"
     },
-    "AutoloadClasses": {
-        "ImgTagHooks": "includes/ImgTag.php"
+    "AutoloadNamespaces": {
+        "MediaWiki\\Extension\\ImgTag\\": "includes/"
     },
     "Hooks": {
-        "ParserFirstCallInit": "ImgTagHooks::onParserFirstCallInit"
+        "ParserFirstCallInit": "MediaWiki\\Extension\\ImgTag\\ImgTag::onParserFirstCallInit"
     },
     "config": {
         "ImgTagDomains": {
