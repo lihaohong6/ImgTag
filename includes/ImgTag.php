@@ -7,13 +7,30 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 
 class ImgTag {
 
     private static $config;
 
-    public static function onParserFirstCallInit($parser) {
+    public static function onParserFirstCallInit( Parser $parser ) {
         $parser->setHook('img', [self::class, 'renderImgTag']);
+        $parser->setFunctionHook('fileused', [self::class, 'markFileAsUsed']);
+    }
+
+    public static function markFileAsUsed( Parser $parser, $filename = '' ) {
+        $filename = $parser->recursiveTagParse( $filename );
+        $filename = trim($filename);
+        // Remove File: prefix if present
+        if (preg_match('/^(File|Image):/i', $filename)) {
+            $filename = preg_replace('/^(File|Image):/i', '', $filename);
+        }
+        $title = Title::makeTitleSafe(NS_FILE, $filename);
+        if ( !$title->exists() ) {
+            return '';
+        }
+        $parser->getOutput()->addImage( $title->getDBkey() );
+        return '';
     }
 
     public static function renderImgTag($input, array $args, Parser $parser, PPFrame $frame) {

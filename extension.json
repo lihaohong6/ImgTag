@@ -39,5 +39,8 @@
     "MessagesDirs": {
         "ImgTag": "i18n"
     },
+    "ExtensionMessagesFiles": {
+        "ImgTagMagic": "ImgTag.i18n.php"
+    },
     "manifest_version": 2
 }
