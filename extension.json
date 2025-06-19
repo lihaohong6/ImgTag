@@ -16,9 +16,9 @@
         "ParserFirstCallInit": "MediaWiki\\Extension\\ImgTag\\ImgTag::onParserFirstCallInit"
     },
     "config": {
-        "ImgTagSanitizeSrc": {
+        "ImgTagSanitizeDomain": {
             "value": true,
-            "description": "Whether the src attribute of the img tag should be sanitized"
+            "description": "Whether the src attribute of the img tag should be sanitized so that only certain domains are allowed."
         },
         "ImgTagDomains": {
             "value": [
@@ -26,7 +26,7 @@
                 "commons.wikimedia.org",
                 "static.wikitide.net"
             ],
-            "description": "Domains that can be used in the src attribute of images"
+            "description": "Domains that can be used in the src attribute of images. Disabled if ImgTagSanitizeDomain is set to false."
         },
         "ImgTagProtocols": {
             "value": ["https", "http"],

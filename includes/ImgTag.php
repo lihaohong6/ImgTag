@@ -28,17 +28,18 @@ class ImgTag {
         if (empty($src)) {
             return '<span class="error">Error: img tag requires src attribute</span>';
         }
-        $sanitizeSrc = self::$config->get("ImgTagSanitizeSrc");
-        if ($sanitizeSrc) { 
+
+        $sanitizeDomain = self::$config->get("ImgTagSanitizeDomain");
+        if ($sanitizeDomain) { 
             // Sanitize the URL
             $domains = self::$config->get("ImgTagDomains");
-            $protocols = self::$config->get("ImgTagProtocols");
-            [$sanitizedSrc, $sanitizationError] = self::sanitizeImageUrl($src, $domains, $protocols);
-            if ($sanitizationError) {
-                return '<span class="error">' . $sanitizationError . '</span>';
-            }
         } else {
-            $sanitizedSrc = $src;
+            $domains = true;
+        }
+        $protocols = self::$config->get("ImgTagProtocols");
+        [$sanitizedSrc, $sanitizationError] = self::sanitizeImageUrl($src, $domains, $protocols);
+        if ($sanitizationError) {
+            return '<span class="error">' . $sanitizationError . '</span>';
         }
 
         $safeAttribs = [];
@@ -82,13 +83,17 @@ class ImgTag {
         }
 
         $host = strtolower($parsed['host']);
-        $domainAllowed = false;
-        // Check host domain
-        foreach ($allowedDomains as $allowedDomain) {
-            if ($host === strtolower($allowedDomain) || 
-                    str_ends_with($host, '.' . strtolower($allowedDomain))) {
-                $domainAllowed = true;
-                break;
+        if ($allowedDomains === true) {
+            $domainAllowed = true;
+        } else {
+            $domainAllowed = false;
+            // Check host domain
+            foreach ($allowedDomains as $allowedDomain) {
+                if ($host === strtolower($allowedDomain) || 
+                        str_ends_with($host, '.' . strtolower($allowedDomain))) {
+                    $domainAllowed = true;
+                    break;
+                }
             }
         }
 

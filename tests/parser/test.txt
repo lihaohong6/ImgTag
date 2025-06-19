@@ -14,11 +14,13 @@ Simple images that are not sanitized
 !! test
 Disable sanitizing
 !! config
-wgImgTagSanitizeSrc=false
+wgImgTagSanitizeDomain=false
 !! wikitext
-<img src="something" />
+<img src="https://a.b" />
+<img src="data:image/svg+xml,<svg onload=alert(1) />
 !! html
-<p><img src="something" />
+<p><img src="https://a.b" />
+<span class="error">Image src must have a valid protocol</span>
 </p>
 !! end
 
@@ -26,7 +28,7 @@ wgImgTagSanitizeSrc=false
 Sanitize image src
 !! wikitext
 <img src="https://a.org/wikipedia/commons/a.jpeg" width="200px"/>
-<img src="file://upload.wikimedia.org/a.png" width="200px"/>
+<img src="data:image/svg+xml,<svg onload=alert(1) />
 !! html
 <p><span class="error">Image src must have a valid domain</span>
 <span class="error">Image src must have a valid protocol</span>
