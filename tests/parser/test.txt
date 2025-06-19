@@ -50,3 +50,14 @@ Recursively parse templates inside img tags
 <p><img src="https://upload.wikimedia.org/a.png" width="200px" />
 </p>
 !! end
+
+!! test
+Sanitize style
+!! wikitext
+<img src="https://upload.wikimedia.org/a.png" width="200px" style="float: right;" />
+<img src="https://upload.wikimedia.org/a.png" width="200px" style="expression" />
+!! html
+<p><img src="https://upload.wikimedia.org/a.png" width="200px" style="float: right;" />
+<img src="https://upload.wikimedia.org/a.png" width="200px" style="/* insecure input */" />
+</p>
+!! end

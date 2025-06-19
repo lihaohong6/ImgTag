@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ImgTag;
 use MediaWiki\Html\Html;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
+use MediaWiki\Parser\Sanitizer;
 use MediaWiki\MediaWikiServices;
 
 class ImgTag {
@@ -44,11 +45,16 @@ class ImgTag {
         $safeAttribs['src'] = $sanitizedSrc;
 
         // Sanitize other attributes
-        $allowedAttribs = ['alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
+        $allowedAttribs = ['style', 'alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         foreach ($args as $attrib => $value) {
             if (in_array($attrib, $allowedAttribs)) {
                 $value = $parser->recursivePreprocess($value, $frame);
-                $safeAttribs[$attrib] = htmlspecialchars(trim($value), ENT_QUOTES);
+                if ($attrib === 'style') {
+                    $value = Sanitizer::checkCss($value);
+                } else {
+                    $value = htmlspecialchars(trim($value), ENT_QUOTES);
+                }
+                $safeAttribs[$attrib] = $value;
             }
         } 
 
