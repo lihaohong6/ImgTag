@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ImgTag;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Html\Html;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
@@ -48,7 +49,7 @@ class ImgTag {
 		return '';
 	}
 
-	public static function renderImgTag( $input, array $args, Parser $parser, PPFrame $frame ) {
+	public static function renderImgTag( $input, array $args, Parser $parser, PPFrame $frame ): string {
 		if ( self::$config === null ) {
 			self::$config = MediaWikiServices::getInstance()->getMainConfig();
 		}
@@ -131,7 +132,7 @@ class ImgTag {
 		if ( !isset( $parsed['host'] ) ) {
 			return [
 				false,
-				"Image src must have a valid host"
+				"Image src must have a host"
 			];
 		}
 
@@ -143,8 +144,7 @@ class ImgTag {
 			// Check host domain
 			foreach ( $allowedDomains as $allowedDomain ) {
 				if (
-					$host === strtolower( $allowedDomain ) ||
-					str_ends_with( $host, '.' . strtolower( $allowedDomain ) )
+					$host === strtolower( $allowedDomain ) || str_ends_with( $host, '.' . strtolower( $allowedDomain ) )
 				) {
 					$domainAllowed = true;
 					break;
