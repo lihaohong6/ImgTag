@@ -59,7 +59,7 @@ class ImgTag {
 		$src = $parser->recursivePreprocess( $src, $frame );
 
 		if ( empty( $src ) ) {
-			return '<span class="error">Error: img tag requires src attribute</span>';
+			return '<span class="error">' . wfMessage("imgtag-error-no-src") . '</span>';
 		}
 
 		$sanitizeDomain = self::$config->get( "ImgTagSanitizeDomain" );
@@ -117,7 +117,7 @@ class ImgTag {
 		if ( !$parsed ) {
 			return [
 				false,
-				"Image src must be non-empty"
+				wfMessage("imgtag-error-invalid-src")
 			];
 		}
 
@@ -125,14 +125,14 @@ class ImgTag {
 		if ( !isset( $parsed['scheme'] ) || !in_array( strtolower( $parsed['scheme'] ), $allowedProtocols ) ) {
 			return [
 				false,
-				"Image src must have a valid protocol"
+				wfMessage("imgtag-error-invalid-protocol")
 			];
 		}
 
 		if ( !isset( $parsed['host'] ) ) {
 			return [
 				false,
-				"Image src must have a host"
+				wfMessage("imgtag-error-no-host")
 			];
 		}
 
@@ -155,7 +155,7 @@ class ImgTag {
 		if ( !$domainAllowed ) {
 			return [
 				false,
-				"Image src must have a valid domain"
+				wfMessage("imgtag-error-invalid-domain")
 			];
 		}
 
