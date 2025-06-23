@@ -22,9 +22,7 @@
         },
         "ImgTagDomains": {
             "value": [
-                "upload.wikimedia.org",
-                "commons.wikimedia.org",
-                "static.wikitide.net"
+                "upload.wikimedia.org"
             ],
             "description": "Domains that can be used in the src attribute of images. Disabled if ImgTagSanitizeDomain is set to false."
         },
