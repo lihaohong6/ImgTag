@@ -7,8 +7,12 @@
 $magicWords = [];
 
 /** English
+ *
  * @author Peter Li
  */
 $magicWords['en'] = [
-   'fileused' => [ 0, 'fileused' ],
+	'fileused' => [
+		0,
+		'fileused'
+	],
 ];
