@@ -19,16 +19,18 @@ class ImgTag {
     }
 
     public static function markFileAsUsed( Parser $parser, $filename = '' ) {
-        $filename = $parser->recursiveTagParse( $filename );
-        $filename = trim($filename);
+        $filename = trim($parser->recursiveTagParse( $filename ));
+        
         // Remove File: prefix if present
         if (preg_match('/^(File|Image):/i', $filename)) {
             $filename = preg_replace('/^(File|Image):/i', '', $filename);
         }
+
         $title = Title::makeTitleSafe(NS_FILE, $filename);
         if ( !$title->exists() ) {
             return '';
         }
+
         $parser->getOutput()->addImage( $title->getDBkey() );
         return '';
     }
@@ -63,18 +65,15 @@ class ImgTag {
         $safeAttribs['src'] = $sanitizedSrc;
 
         // Sanitize other attributes
-        $allowedAttribs = ['style', 'alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
+        $rawAttribs = [];
+        $allowedAttribs = ['id', 'style', 'alt', 'title', 'width', 'height', 'class', 'fetchpriority', 'loading', 'sizes'];
         foreach ($args as $attrib => $value) {
             if (in_array($attrib, $allowedAttribs)) {
                 $value = $parser->recursivePreprocess($value, $frame);
-                if ($attrib === 'style') {
-                    $value = Sanitizer::checkCss($value);
-                } else {
-                    $value = htmlspecialchars(trim($value), ENT_QUOTES);
-                }
-                $safeAttribs[$attrib] = $value;
+                $rawAttribs[$attrib] = $value;
             }
         } 
+        $safeAttribs = array_merge($safeAttribs, Sanitizer::validateAttributes($rawAttribs, $allowedAttribs)); 
 
         return Html::rawElement('img', $safeAttribs); 
     }
