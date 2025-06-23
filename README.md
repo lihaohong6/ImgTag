@@ -11,7 +11,7 @@ git clone https://github.com/lihaohong6/ImgTag.git --depth=1
 
 Then add the following to the bottom of `LocalSettings.php`
 ```php
-wfLoadExtension( 'PortableInfobox' );
+wfLoadExtension( 'ImgTag' );
 ```
 
 ## Configuration
