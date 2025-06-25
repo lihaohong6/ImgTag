@@ -21,6 +21,7 @@ Variables:
 - `$wgImgTagProtocols` (array): permitted protocols for loading images. Default: `['http', 'https']`.
 
 ## Examples
+Below is a basic example.
 ```html
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg" width="100px" class="some-class" alt="Logo of Wikipedia" />
 ```
@@ -30,3 +31,5 @@ This example registers a file as being used on a page using the parser function 
 <img src="{{filepath:Logo.png}}" width="50px" />
 {{#fileused:Logo.png}}
 ```
+
+Although `<img>` is valid HTML markup as `img` is a self-closing tag, MediaWiki cannot properly parse it, so it is not supported by this extension. All usages of the `img` tag must end with a slash (i.e. `<img ... />`.
