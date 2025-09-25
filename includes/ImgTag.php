@@ -98,13 +98,12 @@ class ImgTag {
 		foreach ( $args as $attrib => $value ) {
 			if ( in_array( $attrib, $allowedAttribs ) ) {
 				$value = $parser->recursivePreprocess( $value, $frame );
-				$value = htmlspecialchars( $value );
 				$rawAttribs[$attrib] = $value;
 			}
 		}
 		$safeAttribs = array_merge( $safeAttribs, Sanitizer::validateAttributes( $rawAttribs, $allowedAttribs ) );
 
-		return Html::rawElement( 'img', $safeAttribs );
+		return Html::element( 'img', $safeAttribs );
 	}
 
 	/**
