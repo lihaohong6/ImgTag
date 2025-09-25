@@ -83,7 +83,7 @@ class ImgTag {
 
 		// Sanitize other attributes
 		$rawAttribs = [];
-		$allowedAttribs = [
+		$allowedAttribs = array_fill_keys( [
 			'id',
 			'style',
 			'alt',
@@ -94,7 +94,7 @@ class ImgTag {
 			'fetchpriority',
 			'loading',
 			'sizes'
-		];
+		], true );
 		foreach ( $args as $attrib => $value ) {
 			if ( in_array( $attrib, $allowedAttribs ) ) {
 				$value = $parser->recursivePreprocess( $value, $frame );
