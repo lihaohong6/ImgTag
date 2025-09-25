@@ -63,3 +63,18 @@ Sanitize style
 <img src="https://upload.wikimedia.org/a.png" width="200px" style="/* insecure input */" />
 </p>
 !! end
+
+!! article
+MediaWiki:imgtag-error-no-src
+!! text
+<script>alert("xss")</script>
+!! endarticle
+
+!! test
+Sanitize interface messages
+!! wikitext
+<img/>
+!! html
+<p><span class="error">&lt;script&gt;alert("xss")&lt;/script&gt;</span>
+</p>
+!! end
