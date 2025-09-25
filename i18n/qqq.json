@@ -1,0 +1,7 @@
+{
+	"imgtag-desc": "A short description of this extension",
+	"imgtag-error-no-src": "Error message shown when the src attribute of the image is not set",
+	"imgtag-error-invalid-src": "Generic error message shown when the src attribute is invalid",
+	"imgtag-error-invalid-protocol": "Error message shown when the src attribute contains an invalid protocol",
+	"imgtag-error-invalid-domain": "Error message shown when the src attribute belongs to a disallowed domain"
+}

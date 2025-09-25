@@ -6,6 +6,5 @@
 	"imgtag-error-no-src": "Images must have the src attribute set",
 	"imgtag-error-invalid-src": "Images must have a valid src attribute",
 	"imgtag-error-invalid-protocol": "Image src must have a valid protocol",
-	"imgtag-error-no-host": "Image src must have a host",
 	"imgtag-error-invalid-domain": "Image src must have a valid domain"
 }

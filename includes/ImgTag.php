@@ -160,7 +160,7 @@ class ImgTag {
 		if ( !isset( $parsed['host'] ) ) {
 			return [
 				false,
-				wfMessage( "imgtag-error-no-host" )->inContentLanguage()
+				wfMessage( "imgtag-error-invalid-src" )->inContentLanguage()
 			];
 		}
 
