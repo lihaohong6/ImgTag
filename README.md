@@ -43,3 +43,19 @@ This example registers a file as being used on a page using the parser function 
 ```
 
 Although `<img>` is valid HTML markup as `img` is a self-closing tag, MediaWiki cannot properly parse it, so it is not supported by this extension. All usages of the `img` tag must end with a slash (i.e. `<img ... />`.
+
+## Allowed tag attributes
+Below is a table of possible HTML attributes for the `img` tag.
+
+| tags             |
+|------------------|
+| id               |
+| style            |
+| alt              |
+| title            |
+| width            |
+| height           |
+| class            |
+| fetchpriority    |
+| loading          |
+| sizes            |
