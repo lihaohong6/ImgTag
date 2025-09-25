@@ -59,7 +59,7 @@ class ImgTag {
 		$src = $parser->recursivePreprocess( $src, $frame );
 
 		if ( empty( $src ) ) {
-			return '<span class="error">' . wfMessage("imgtag-error-no-src") . '</span>';
+			return '<span class="error">' . wfMessage( "imgtag-error-no-src" )->inContentLanguage() . '</span>';
 		}
 
 		$sanitizeDomain = self::$config->get( "ImgTagSanitizeDomain" );
@@ -117,7 +117,7 @@ class ImgTag {
 		if ( !$parsed ) {
 			return [
 				false,
-				wfMessage("imgtag-error-invalid-src")
+				wfMessage( "imgtag-error-invalid-src" )->inContentLanguage()
 			];
 		}
 
@@ -125,14 +125,14 @@ class ImgTag {
 		if ( !isset( $parsed['scheme'] ) || !in_array( strtolower( $parsed['scheme'] ), $allowedProtocols ) ) {
 			return [
 				false,
-				wfMessage("imgtag-error-invalid-protocol")
+				wfMessage( "imgtag-error-invalid-protocol" )->inContentLanguage()
 			];
 		}
 
 		if ( !isset( $parsed['host'] ) ) {
 			return [
 				false,
-				wfMessage("imgtag-error-no-host")
+				wfMessage( "imgtag-error-no-host" )->inContentLanguage()
 			];
 		}
 
@@ -155,7 +155,7 @@ class ImgTag {
 		if ( !$domainAllowed ) {
 			return [
 				false,
-				wfMessage("imgtag-error-invalid-domain")
+				wfMessage( "imgtag-error-invalid-domain" )->inContentLanguage()
 			];
 		}
 
