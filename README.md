@@ -26,6 +26,16 @@ Below is a basic example.
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg" width="100px" class="some-class" alt="Logo of Wikipedia" />
 ```
 
+You can also use a parser function:
+```wikitext
+{{#img:
+|src=https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg
+|width=100px
+|class=some-class
+|alt=Logo of Wikipedia
+}}
+```
+
 This example registers a file as being used on a page using the parser function `fileused`. Note that alternatives such as using [Scribunto's `exists` function](https://www.mediawiki.org/wiki/Extension:Scribunto/Lua_reference_manual#File_metadata) is considered [expensive](https://www.mediawiki.org/wiki/Manual:$wgExpensiveParserFunctionLimit).
 ```wikitext
 <img src="{{filepath:Logo.png}}" width="50px" />
