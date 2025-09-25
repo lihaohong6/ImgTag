@@ -1,14 +1,14 @@
 <?php
 /**
  * @license GPL-2.0-or-later
- * @author Peter Li
+ * @author lihaohong6
  */
 
 $magicWords = [];
 
 /** English
  *
- * @author Peter Li
+ * @author lihaohong6
  */
 $magicWords['en'] = [
 	'fileused' => [
