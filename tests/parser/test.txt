@@ -5,8 +5,17 @@ Simple images that are not sanitized
 !! wikitext
 <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Mediawiki_logo_reworked.png" width="200px" />
 <img src="https://upload.wikimedia.org/test.jpg" width="100px" height="10px" alt="Desc" class="test" loading="lazy" />
+{{#img:
+|src=https://upload.wikimedia.org/test.jpg
+|width=100px
+|height=10px
+|alt=Desc
+|class=test
+|loading=lazy
+}}
 !! html
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Mediawiki_logo_reworked.png" width="200px" />
+<img src="https://upload.wikimedia.org/test.jpg" width="100px" height="10px" alt="Desc" class="test" loading="lazy" />
 <img src="https://upload.wikimedia.org/test.jpg" width="100px" height="10px" alt="Desc" class="test" loading="lazy" />
 </p>
 !! end
@@ -44,12 +53,27 @@ Sanitize image attributes
 </p>
 !! end
 
+!! article
+Template:Width200
+!! text
+<includeonly>200px</includeonly><noinclude>
+Something
+</noinclude>
+!! endarticle
+
 !! test
 Recursively parse templates inside img tags
 !! wikitext
 <img src="https://{{{1|upload}}}.wikimedia.{{{2|org}}}/a.png" width="{{{width|200}}}px" />
+<img src="https://{{{1|upload}}}.wikimedia.{{{2|org}}}/a.png" width="{{Width200}}" />
+{{#img:
+|src=https://{{{1|upload}}}.wikimedia.{{{2|org}}}/a.png
+|width={{Width200}}
+}}
 !! html
 <p><img src="https://upload.wikimedia.org/a.png" width="200px" />
+<img src="https://upload.wikimedia.org/a.png" width="200px" />
+<img src="https://upload.wikimedia.org/a.png" width="200px" />
 </p>
 !! end
 
@@ -58,8 +82,10 @@ Sanitize style
 !! wikitext
 <img src="https://upload.wikimedia.org/a.png" width="200px" style="float: right;" />
 <img src="https://upload.wikimedia.org/a.png" width="200px" style="expression" />
+{{#img:https://upload.wikimedia.org/a.png|width=200px|style=expression}}
 !! html
 <p><img src="https://upload.wikimedia.org/a.png" width="200px" style="float: right;" />
+<img src="https://upload.wikimedia.org/a.png" width="200px" style="/* insecure input */" />
 <img src="https://upload.wikimedia.org/a.png" width="200px" style="/* insecure input */" />
 </p>
 !! end
@@ -74,7 +100,20 @@ MediaWiki:imgtag-error-no-src
 Sanitize interface messages
 !! wikitext
 <img/>
+{{#img:}}
 !! html
 <p><span class="error">&lt;script&gt;alert("xss")&lt;/script&gt;</span>
+<span class="error">&lt;script&gt;alert("xss")&lt;/script&gt;</span>
+</p>
+!! end
+
+!! test
+Special img parser function test
+!! wikitext
+{{#img:
+|src=https://upload.wikimedia.org/test=test.jpg
+}}
+!! html
+<p><img src="https://upload.wikimedia.org/test=test.jpg" />
 </p>
 !! end

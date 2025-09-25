@@ -29,6 +29,14 @@ class ImgTag {
 				'markFileAsUsed'
 			]
 		);
+		$parser->setFunctionHook(
+			'img',
+			[
+				self::class,
+				'renderImgFunction'
+			],
+			Parser::SFH_OBJECT_ARGS // so we can get $frame properly
+		);
 	}
 
 	public static function markFileAsUsed( Parser $parser, $filename = '' ): string {
@@ -47,6 +55,27 @@ class ImgTag {
 		$parser->getOutput()->addImage( $title->getDBkey() );
 
 		return '';
+	}
+
+	public static function renderImgFunction( Parser $parser, PPFrame $frame, array $args ): string {
+		$attribs = [];
+
+		if ( isset( $args[0] ) ) {
+			$attribs['src'] = $args[0];
+		}
+
+		for ( $i = 1; $i < count( $args ); $i++ ) {
+			$bits = explode( '=', $frame->expand( $args[$i] ), 2 );
+			if ( count( $bits ) === 2 ) {
+				$attribs[trim( $bits[0] )] = trim( $bits[1] );
+			}
+		}
+
+		// Reuse existing renderer
+		$html = self::renderImgTag( '', $attribs, $parser, $frame );
+
+		// This shouldn't be escaped like wikitext, so use this instead
+		return $parser->insertStripItem( $html, $frame );
 	}
 
 	public static function renderImgTag( $input, array $args, Parser $parser, PPFrame $frame ): string {

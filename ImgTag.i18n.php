@@ -15,4 +15,8 @@ $magicWords['en'] = [
 		0,
 		'fileused'
 	],
+	'img' => [
+		0,
+		'img'
+	]
 ];
