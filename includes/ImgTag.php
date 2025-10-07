@@ -43,9 +43,7 @@ class ImgTag {
 		$filename = trim( $parser->recursiveTagParse( $filename ) );
 
 		// Remove File: prefix if present
-		if ( preg_match( '/^(File|Image):/i', $filename ) ) {
-			$filename = preg_replace( '/^(File|Image):/i', '', $filename );
-		}
+		$filename = preg_replace( '/^(File|Image):/i', '', $filename );
 
 		$title = Title::makeTitleSafe( NS_FILE, $filename );
 		if ( !$title->exists() ) {
