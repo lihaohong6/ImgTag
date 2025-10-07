@@ -139,6 +139,15 @@ class ImgTag {
 	 * Sanitize image URLs
 	 */
 	private static function sanitizeImageUrl( $url, $allowedDomains, $allowedProtocols ): array {
+		$url = filter_var( $url, FILTER_VALIDATE_URL );
+
+		if ( !$url ) {
+			return [
+				false,
+				wfMessage( "imgtag-error-invalid-src" )->inContentLanguage()
+			];
+		}
+
 		// Parse the URL
 		$parsed = parse_url( $url );
 
