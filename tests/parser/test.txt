@@ -29,7 +29,7 @@ wgImgTagSanitizeDomain=false
 <img src="data:image/svg+xml,<svg onload=alert(1) />
 !! html
 <p><img src="https://a.b" />
-<span class="error">Image src must have a valid protocol</span>
+<span class="error">Images must have a valid src attribute</span>
 </p>
 !! end
 
@@ -40,7 +40,7 @@ Sanitize image src
 <img src="data:image/svg+xml,<svg onload=alert(1) />
 !! html
 <p><span class="error">Image src must have a valid domain</span>
-<span class="error">Image src must have a valid protocol</span>
+<span class="error">Images must have a valid src attribute</span>
 </p>
 !! end
 
