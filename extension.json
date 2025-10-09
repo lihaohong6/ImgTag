@@ -1,44 +1,47 @@
 {
-    "name": "ImgTag",
-    "version": "0.1.0",
-    "author": "lihaohong6",
-    "url": "",
-    "descriptionmsg": "imgtag-desc",
-    "license-name": "GPL-2.0-or-later",
-    "type": "parserhook",
-    "requires": {
-        "MediaWiki": ">= 1.42.0"
-    },
-    "AutoloadNamespaces": {
-        "MediaWiki\\Extension\\ImgTag\\": "includes/"
-    },
-    "Hooks": {
-        "ParserFirstCallInit": "MediaWiki\\Extension\\ImgTag\\ImgTag::onParserFirstCallInit"
-    },
-    "config": {
-        "ImgTagSanitizeDomain": {
-            "value": true,
-            "description": "Whether the src attribute of the img tag should be sanitized so that only certain domains are allowed."
-        },
-        "ImgTagDomains": {
-            "value": [
-                "upload.wikimedia.org"
-            ],
-            "description": "Domains that can be used in the src attribute of images. Disabled if ImgTagSanitizeDomain is set to false."
-        },
-        "ImgTagProtocols": {
-            "value": ["https", "http"],
-            "description": "Protocols that the src attribute can use"
-        }
-    },
-    "ConfigRegistry": {
-        "imgtag": "GlobalVarConfig::newInstance"
-    },
-    "MessagesDirs": {
-        "ImgTag": "i18n"
-    },
-    "ExtensionMessagesFiles": {
-        "ImgTagMagic": "ImgTag.i18n.php"
-    },
-    "manifest_version": 2
+	"name": "ImgTag",
+	"version": "0.1.0",
+	"author": "lihaohong6",
+	"url": "https://www.mediawiki.org/wiki/Extension:ImgTag",
+	"descriptionmsg": "imgtag-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.42.0"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\ImgTag\\": "includes/"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "MediaWiki\\Extension\\ImgTag\\ImgTag::onParserFirstCallInit"
+	},
+	"config": {
+		"ImgTagSanitizeDomain": {
+			"value": true,
+			"description": "Whether the src attribute of the img tag should be sanitized so that only certain domains are allowed."
+		},
+		"ImgTagDomains": {
+			"value": [
+				"upload.wikimedia.org"
+			],
+			"description": "Domains that can be used in the src attribute of images. Disabled if ImgTagSanitizeDomain is set to false."
+		},
+		"ImgTagProtocols": {
+			"value": [
+				"https",
+				"http"
+			],
+			"description": "Protocols that the src attribute can use"
+		}
+	},
+	"ConfigRegistry": {
+		"imgtag": "GlobalVarConfig::newInstance"
+	},
+	"MessagesDirs": {
+		"ImgTag": "i18n"
+	},
+	"ExtensionMessagesFiles": {
+		"ImgTagMagic": "ImgTag.i18n.php"
+	},
+	"manifest_version": 2
 }
