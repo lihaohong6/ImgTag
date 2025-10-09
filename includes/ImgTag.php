@@ -123,7 +123,7 @@ class ImgTag {
 			'sizes'
 		], true );
 		foreach ( $args as $attrib => $value ) {
-			if ( in_array( $attrib, $allowedAttribs ) ) {
+			if ( isset( $allowedAttribs[$attrib] ) ) {
 				$value = $parser->recursivePreprocess( $value, $frame );
 				$rawAttribs[$attrib] = $value;
 			}
