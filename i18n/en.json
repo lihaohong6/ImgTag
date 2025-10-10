@@ -2,7 +2,7 @@
 	"@metadata": {
 		"authors": []
 	},
-	"imgtag-desc": "Adds <code>&lt;img&gt;</code> tag for embedding images",
+	"imgtag-desc": "Adds the <code>&lt;img /&gt;</code> tag for embedding images and parser function <code>#fileused</code> to mark a file as being used on a page",
 	"imgtag-error-no-src": "Images must have the src attribute set",
 	"imgtag-error-invalid-src": "Images must have a valid src attribute",
 	"imgtag-error-invalid-protocol": "Image src must have a valid protocol",
