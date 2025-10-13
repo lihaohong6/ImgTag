@@ -117,3 +117,19 @@ Special img parser function test
 <p><img src="https://upload.wikimedia.org/test=test.jpg" />
 </p>
 !! end
+
+!! article
+File:Test
+!! text
+T
+!! endarticle
+
+!! test
+Fileused should always not produce an error even when the file does not exist.
+!! wikitext
+{{#fileused:{{{1}}}}}<!--
+-->{{#fileused:Test}}<!--
+-->{{#fileused:File:Test}}
+!! html
+!! end
+

@@ -46,7 +46,7 @@ class ImgTag {
 		$filename = preg_replace( '/^(File|Image):/i', '', $filename );
 
 		$title = Title::makeTitleSafe( NS_FILE, $filename );
-		if ( !$title->exists() ) {
+		if ( !$title || !$title->exists() ) {
 			return '';
 		}
 
