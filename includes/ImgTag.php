@@ -137,6 +137,18 @@ class ImgTag {
 	 * Sanitize image URLs
 	 */
 	private static function sanitizeImageUrl( $url, $allowedDomains, $allowedProtocols ): array {
+		// Try to fix the output of {{filepath:}} which starts with // without a protocol
+		if ( str_starts_with( $url, "//" ) ) {
+			// Default to https if it's allowed. Otherwise, use an allowed protocol.
+			if ( in_array( "https", $allowedProtocols ) ) {
+				$url = "https:" . $url;
+			} else {
+				if ( count( $allowedProtocols ) > 0 ) {
+					$url = $allowedProtocols[0] . ":" . $url;
+				}
+			}
+		}
+
 		$url = filter_var( $url, FILTER_VALIDATE_URL );
 
 		if ( !$url ) {

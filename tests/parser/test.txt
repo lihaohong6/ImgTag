@@ -53,6 +53,15 @@ Sanitize image attributes
 </p>
 !! end
 
+!! test
+Add protocol automatically for output of {{filepath}}
+!! wikitext
+<img src="//upload.wikimedia.org/a.png"/>
+!! html
+<p><img src="https://upload.wikimedia.org/a.png" />
+</p>
+!! end
+
 !! article
 Template:Width200
 !! text
@@ -132,4 +141,3 @@ Fileused should always not produce an error even when the file does not exist.
 -->{{#fileused:File:Test}}
 !! html
 !! end
-
