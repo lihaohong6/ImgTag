@@ -35,7 +35,7 @@
 		}
 	},
 	"ConfigRegistry": {
-		"imgtag": "GlobalVarConfig::newInstance"
+		"imgtag": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"MessagesDirs": {
 		"ImgTag": "i18n"
